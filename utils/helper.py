@@ -173,14 +173,11 @@ def compare_plot(model_train1, model_train2,model1,model2,dataset,shape1,shape2,
   
 
 def extract_features(model_name, dataset_name,dataset1=0, dataset2=0, random_gamma=1.5,random_betta=0.5):
-    # new_gamma = tf.constant(random_gamma) 
-    # new_beta = tf.constant(random_betta)   
-    output_directory = model_name+'/results/' + dataset_name + '/'
-    output_directory_reverse = model_name+'/results_reverse/' + dataset_name + '/'
-    model_train = keras.models.load_model(output_directory+'best_model.hdf5')
+    # model_train = keras.models.load_model(f'./results_2.15/fcn/run_0/{dataset_name}/last_model.hdf5')
+    model = tf.keras.models.load_model(f'./results_2.15/fcn/run_0/{dataset_name}/last_model.hdf5')
+    model_train = [layer for layer in model.layers if 'model' in layer.name][0]
     # model_train=change_bn_parameters(model_train,new_gamma,new_beta)
-    model_test = keras.models.load_model(output_directory_reverse+'best_model.hdf5')
-    # model_test=change_bn_parameters(model_test,new_gamma,new_beta)
+    model_test = keras.models.load_model(f"./supervised_fcn/{dataset_name}/best_model.hdf5")
     df = read_dataset(dataset_name)
 
     train_results, test_results = None, None

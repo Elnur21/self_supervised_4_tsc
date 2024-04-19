@@ -18,7 +18,7 @@ def extract_args():
     # example : python3 main.py -e inception -d Coffee
 
 
-UNIVARIATE_DATASET_NAMES_2018 = [ 'ACSF1', 'Yoga', 'GunPointOldVersusYoung',
+UNIVARIATE_DATASET_NAMES_2018 = [ 'Yoga', 'GunPointOldVersusYoung',
                  'FreezerSmallTrain', 'WordSynonyms', 'Car', 'ProximalPhalanxTW', 'InsectWingbeatSound','FaceAll', 'EOGVerticalSignal',  'Earthquakes']
 
 
