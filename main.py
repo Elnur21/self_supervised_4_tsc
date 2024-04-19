@@ -18,7 +18,7 @@ def extract_args():
     # example : python3 main.py -e inception -d Coffee
 
 
-UNIVARIATE_DATASET_NAMES_2018 = ['ArrowHead', 'BeetleFly', 'Ham', 'MoteStrain', 'OliveOil', 'Wine', 'Lightning7', 'InlineSkate', 'Beef', 'ACSF1', 'Yoga', 'GunPointOldVersusYoung',
+UNIVARIATE_DATASET_NAMES_2018 = [ 'ACSF1', 'Yoga', 'GunPointOldVersusYoung',
                  'FreezerSmallTrain', 'WordSynonyms', 'Car', 'ProximalPhalanxTW', 'InsectWingbeatSound','FaceAll', 'EOGVerticalSignal',  'Earthquakes']
 
 
@@ -28,11 +28,11 @@ if __name__ == "__main__":
 
     runs = 5
 
-    n_dim = 32
+    n_dim = 128
 
     encoder_name, _ = extract_args()
     for file_name in UNIVARIATE_DATASET_NAMES_2018:
-        output_directory_parent = 'results_lite/'
+        output_directory_parent = 'results_2.15/'
         # if os.path.exists(output_directory_parent+"fcn/run_0/"+file_name):
         #     print('Already done')
         #     continue

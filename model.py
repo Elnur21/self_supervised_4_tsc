@@ -55,7 +55,7 @@ class MODEL:
         negative_output = model_to_use_as_layers(negative_input)
 
 
-        all_layers_combined = tf.keras.layers.concatenate([refference_output,positive_output,negative_output],axis=1)
+        all_layers_combined = tf.keras.layers.concatenate([refference_output,positive_output,negative_output],axis=2)
 
         self.model = tf.keras.models.Model(inputs=[refference_input,positive_input,negative_input],outputs=all_layers_combined)
 
