@@ -2,6 +2,7 @@
 
 # Infinite loop to check for changes every hour
 while true; do
+    clear
     # Change directory to the root of the git repository
     cd "$(git rev-parse --show-toplevel)"
 
