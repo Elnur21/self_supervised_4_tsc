@@ -28,7 +28,7 @@ if __name__ == "__main__":
 
     runs = 5
 
-    n_dim = 128
+    n_dim = 32
 
     encoder_name, _ = extract_args()
     for file_name in UNIVARIATE_DATASET_NAMES_2018:

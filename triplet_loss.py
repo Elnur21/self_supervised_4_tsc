@@ -4,7 +4,7 @@ import tensorflow as tf
 def triplet_loss_function(alpha):
     
     def temp(ytrue, ypred):
-
+        
         ref = ypred[:, 0]
         pos = ypred[:, 1]
         neg = ypred[:, 2]

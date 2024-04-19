@@ -244,9 +244,11 @@ class LITE:
 
         gap = tf.keras.layers.GlobalAveragePooling1D()(x)
 
-        output_layer = tf.keras.layers.Dense(
-            units=self.n_classes, activation="softmax"
-        )(gap)
+        # output_layer = tf.keras.layers.Dense(
+        #     units=self.n_classes, activation="softmax"
+        # )(gap)
+
+        output_layer = tf.keras.layers.Reshape(target_shape=(32,1))(gap)
 
         self.model = tf.keras.models.Model(inputs=input_layer, outputs=output_layer)
 
