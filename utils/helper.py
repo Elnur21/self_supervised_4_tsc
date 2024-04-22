@@ -61,21 +61,21 @@ def plot_filters(model_train, model_test,dataset_name, perp,i=1):
     
     plt.scatter(concat_tsne[:shape[1],0], concat_tsne[:shape[1],1], label=f"Supervised", alpha=0.4)
     # Annotate each point with its index
-    for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
-        plt.annotate(txt, (concat_tsne[:shape[1],0][i], concat_tsne[:shape[1],1][i]))
+    # for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
+    #     plt.annotate(txt, (concat_tsne[:shape[1],0][i], concat_tsne[:shape[1],1][i]))
 
     plt.scatter(concat_tsne[shape[1]:,0], concat_tsne[shape[1]:,1], label=f"Self-supervised", alpha=0.4)  
     # Annotate each point with its index
-    for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
-        plt.annotate(txt, (concat_tsne[shape[1]:,0][i], concat_tsne[shape[1]:,1][i]))
+    # for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
+    #     plt.annotate(txt, (concat_tsne[shape[1]:,0][i], concat_tsne[shape[1]:,1][i]))
 
    
     plt.legend()
     plt.title(f'{dataset_name} Scatter Plot of Last Layer Filters')
     plt.xlabel('Filter')
     plt.ylabel('Filter')
-    create_directory(f"filters/filters_perplexity_{perp}")
-    plt.savefig(f"filters/filters_perplexity_{perp}/"+dataset_name+"_filters.png")
+    create_directory(f"filters_lite/filters_perplexity_{perp}")
+    plt.savefig(f"filters_lite/filters_perplexity_{perp}/"+dataset_name+"_filters.png")
     plt.close()
 
 
@@ -171,10 +171,10 @@ def compare_plot(model_train1, model_train2,model1,model2,dataset,shape1,shape2,
 
 def extract_features(model_name, dataset_name,dataset1=0, dataset2=0, random_gamma=1.5,random_betta=0.5):
     # model_train = keras.models.load_model(f'./results_2.15/fcn/run_0/{dataset_name}/last_model.hdf5')
-    model = tf.keras.models.load_model(f'./results_2.15/fcn/run_0/{dataset_name}/last_model.hdf5')
+    model = tf.keras.models.load_model(f'./results_lite/lite/run_0/{dataset_name}/last_model.hdf5')
     model_train = [layer for layer in model.layers if 'model' in layer.name][0]
     # model_train=change_bn_parameters(model_train,new_gamma,new_beta)
-    model_test = keras.models.load_model(f"./supervised_fcn/{dataset_name}/best_model.hdf5")
+    model_test = keras.models.load_model(f"./supervised_lite/{dataset_name}/best_model.hdf5")
     df = read_dataset(dataset_name)
 
     train_results, test_results = None, None
@@ -280,8 +280,8 @@ def plot_gap_results(model_name, dataset_name, random_gamma=1.5,random_betta=0.5
             plt.title(f'{dataset_name} Scatter Plot of GAP results')
             plt.xlabel('Feature')
             plt.ylabel('Feature')
-            create_directory(f"{model_name}/sorted_gaps/gap_perplexity_{perp}")
-            plt.savefig(f"{model_name}/sorted_gaps/gap_perplexity_{perp}/"+dataset_name+"_gap.png")
+            create_directory(f"gaps_{model_name}/gap_perplexity_{perp}")
+            plt.savefig(f"gaps_{model_name}/gap_perplexity_{perp}/"+dataset_name+"_gap.png")
             plt.close()
 
 
