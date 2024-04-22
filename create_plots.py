@@ -19,10 +19,10 @@ for dataset_name in ['ArrowHead', 'BeetleFly', 'Ham', 'MoteStrain', 'OliveOil', 
     print(dataset_name)
 
     with tf.keras.utils.custom_object_scope(custom_objects):
-        model = tf.keras.models.load_model(f'./results_2.15/fcn/run_0/{dataset_name}/last_model.hdf5')
+        model = tf.keras.models.load_model(f'./results_lite/lite/run_0/{dataset_name}/last_model.hdf5')
         fcn_model = [layer for layer in model.layers if 'model' in layer.name][0]
 
-        supervised_model = keras.models.load_model(f"./supervised_fcn/{dataset_name}/best_model.hdf5")
+        supervised_model = keras.models.load_model(f"./supervised_lite/{dataset_name}/best_model.hdf5")
 
         perplexities = [3,5,10,15]
         for  perp in perplexities:

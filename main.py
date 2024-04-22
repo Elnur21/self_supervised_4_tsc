@@ -1,10 +1,8 @@
 import sys
-import os
+# import os
 import numpy as np
-import pandas as pd
 from utils.utils import load_data, znormalisation, create_directory, encode_labels, split_ypred,draw,draw_before
 from model import MODEL
-from apply_classifier import apply_classifier
 
 def extract_args():
 

@@ -42,17 +42,14 @@ def get_percent(value):
 
 
 def plot_filters(model_train, model_test,dataset_name, perp,i=1):   
-    filters_lite, _ = [layer for layer in model_train.layers if 'conv' in layer.name][0].get_weights()
-    filters_fcn, _ = [layer for layer in model_test.layers if 'conv' in layer.name][0].get_weights()
+    filters_train = [layer for layer in model_train.layers if 'conv' in layer.name][-1].get_weights()[0]
+    filters_test= [layer for layer in model_test.layers if 'conv' in layer.name][-1].get_weights()[0]
 
-    shape_lite = filters_lite.shape
-    shape_fcn = filters_fcn.shape
-    print(shape_lite)
-    print(shape_fcn)
-    filters_reshaped_train = filters_lite.reshape(shape_lite[2],shape_lite[0])
-    filters_reshaped_test = filters_fcn.reshape(shape_fcn[2],shape_fcn[0])
+    shape = filters_train.shape
 
-    concat = np.concatenate((filters_reshaped_train, filters_reshaped_test)) 
+    filters_reshaped_train = filters_train.reshape(shape[1],shape[0])
+    filters_reshaped_test = filters_test.reshape(shape[1],shape[0])
+
     concat = np.concatenate((filters_reshaped_train, filters_reshaped_test)) 
     concat =  (concat - np.min(concat)) / (np.max(concat) - np.min(concat))
 
@@ -62,19 +59,19 @@ def plot_filters(model_train, model_test,dataset_name, perp,i=1):
     concat_tsne = tsne.fit_transform(concat_dtw)
     
     
-    plt.scatter(concat_tsne[:shape_lite[2],0], concat_tsne[:shape_lite[2],1], label=f"Supervised", alpha=0.4)
+    plt.scatter(concat_tsne[:shape[1],0], concat_tsne[:shape[1],1], label=f"Supervised", alpha=0.4)
     # Annotate each point with its index
-    # for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
-    #     plt.annotate(txt, (concat_tsne[:shape[1],0][i], concat_tsne[:shape[1],1][i]))
+    for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
+        plt.annotate(txt, (concat_tsne[:shape[1],0][i], concat_tsne[:shape[1],1][i]))
 
-    plt.scatter(concat_tsne[shape_lite[2]:,0], concat_tsne[shape_lite[2]:,1], label=f"Self-supervised", alpha=0.4)  
+    plt.scatter(concat_tsne[shape[1]:,0], concat_tsne[shape[1]:,1], label=f"Self-supervised", alpha=0.4)  
     # Annotate each point with its index
-    # for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
-    #     plt.annotate(txt, (concat_tsne[shape[1]:,0][i], concat_tsne[shape[1]:,1][i]))
+    for i, txt in enumerate(range(len(concat_tsne[:shape[1],0]))):
+        plt.annotate(txt, (concat_tsne[shape[1]:,0][i], concat_tsne[shape[1]:,1][i]))
 
    
     plt.legend()
-    plt.title(f'{dataset_name} Scatter Plot of First Layer Filters')
+    plt.title(f'{dataset_name} Scatter Plot of Last Layer Filters')
     plt.xlabel('Filter')
     plt.ylabel('Filter')
     create_directory(f"filters/filters_perplexity_{perp}")
