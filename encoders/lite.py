@@ -8,7 +8,13 @@ for gpu in gpus:
 
 class LITE:
 
-    def __init__(self,input_shape,n_dim,batch_size=64,
+    # def __init__(self,input_shape,n_dim,batch_size=64,
+    def __init__(
+        self,
+        input_shape,
+        n_dim,
+        output_directory="./",
+        batch_size=64,
         n_filters=32,
         kernel_size=41,
         n_epochs=1500,
@@ -18,7 +24,9 @@ class LITE:
         use_multiplexing=True,
     ):
 
-        self.input_shape = input_shape
+        self.output_directory = output_directory
+
+        self.length_TS = input_shape[0]
         self.n_classes = n_dim
 
         self.verbose = verbose
@@ -38,10 +46,8 @@ class LITE:
 
     def hybird_layer(
         self, input_tensor, input_channels, kernel_sizes=[2, 4, 8, 16, 32, 64]
-    ):  
-        # print(self.input_shape)
-        input_tensor = tf.keras.layers.Reshape(target_shape=(self.input_shape[0],1),name='fff_1')(input_tensor)
-        # print(input_tensor)
+    ):
+
         conv_list = []
 
         for kernel_size in kernel_sizes:
@@ -52,7 +58,7 @@ class LITE:
             filter_[indices_ % 2 == 0] *= -1
 
             conv = tf.keras.layers.Conv1D(
-                filters=input_channels,
+                filters=1,
                 kernel_size=kernel_size,
                 padding="same",
                 use_bias=False,
@@ -76,7 +82,7 @@ class LITE:
             filter_[indices_ % 2 > 0] *= -1
 
             conv = tf.keras.layers.Conv1D(
-                filters=input_channels,
+                filters=1,
                 kernel_size=kernel_size,
                 padding="same",
                 use_bias=False,
@@ -109,7 +115,7 @@ class LITE:
             filter_[5 * kernel_size // 4 :] = -filter_right
 
             conv = tf.keras.layers.Conv1D(
-                filters=input_channels,
+                filters=1,
                 kernel_size=kernel_size + kernel_size // 2,
                 padding="same",
                 use_bias=False,
@@ -151,7 +157,7 @@ class LITE:
         kernel_size_s = [self.kernel_size // (2**i) for i in range(n_convs)]
 
         conv_list = []
-        reshape = tf.keras.layers.Reshape(target_shape=(self.input_shape[0],1),name='fff')(input_inception)
+
         for i in range(len(kernel_size_s)):
             conv_list.append(
                 tf.keras.layers.Conv1D(
@@ -162,10 +168,11 @@ class LITE:
                     dilation_rate=dilation_rate,
                     activation=activation,
                     use_bias=False,
-                )(reshape)
+                )(input_inception)
             )
 
         if use_hybird_layer:
+
             self.hybird = self.hybird_layer(
                 input_tensor=input_tensor, input_channels=input_tensor.shape[-1]
             )
@@ -209,10 +216,10 @@ class LITE:
 
         self.keep_track = 0
 
-        input_shape = self.input_shape
+        input_shape = (self.length_TS,)
 
         input_layer = tf.keras.layers.Input(input_shape)
-        reshape_layer = tf.keras.layers.Reshape(target_shape=self.input_shape)(
+        reshape_layer = tf.keras.layers.Reshape(target_shape=(self.length_TS, 1))(
             input_layer
         )
 
@@ -247,9 +254,8 @@ class LITE:
         # output_layer = tf.keras.layers.Dense(
         #     units=self.n_classes, activation="softmax"
         # )(gap)
-
-        output_layer = tf.keras.layers.Reshape(target_shape=(32,1))(gap)
+        output_layer = tf.keras.layers.Reshape(target_shape=(self.n_classes,1))(gap)
 
         self.model = tf.keras.models.Model(inputs=input_layer, outputs=output_layer)
 
-      
+       
