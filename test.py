@@ -8,8 +8,7 @@ from model import MODEL
     
 
 
-UNIVARIATE_DATASET_NAMES_2018 = [ 'Yoga', 'GunPointOldVersusYoung',
-                 'FreezerSmallTrain', 'WordSynonyms', 'Car', 'ProximalPhalanxTW', 'InsectWingbeatSound','FaceAll', 'EOGVerticalSignal',  'Earthquakes']
+UNIVARIATE_DATASET_NAMES_2018 = [ 'ArrowHead', 'BeetleFly', 'Ham', 'MoteStrain', 'OliveOil', 'Wine', 'Lightning7', 'InlineSkate', 'Beef', 'ACSF1']
 
 
 
